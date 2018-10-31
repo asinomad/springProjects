@@ -1,0 +1,28 @@
+# Placeholders with constants will be replaced by maven-resource-plugin during build
+
+version: '3'
+
+services:
+    postgres.service:
+      restart: on-failure
+      container_name: postgres-container
+      build:
+        context: ./common-context/postgressql
+      ports:
+        - '5434:5432'
+    main.service:
+        container_name: main-container
+        build:
+          context: ./common-context/main-service
+#        restart: on-failure
+        ports:
+          - "8089:8080"
+        links:
+          - postgres.service
+        volumes:
+          - "./logs:/logs"
+        environment:
+          - DATABASE_HOST=postgres.service
+          - DATABASE_PORT=5432
+        command: "dockerize -wait tcp://postgres.service:5432 -timeout 120s java -jar app.jar"
+        user: ${USERID}:${GROUPID}

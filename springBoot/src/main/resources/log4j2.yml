@@ -1,0 +1,42 @@
+Configutation:
+  name: default
+
+  Properties:
+    Property:
+      - name: LOG_DIR
+        value: ${LOG_DIR:-./logs}
+
+  Appenders:
+    Console:
+      name: STDOUT
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+    RollingFile:
+      - name: FILE-APPLICATION
+        ThresholdFilter:
+          level: all
+          onMatch: ACCEPT
+        fileName: ${LOG_DIR}/@artifactId@/@version@/@artifactId@-application.log
+        filePattern: ${LOG_DIR}/@artifactId/@version/@artifactId@-application.%d{yyyy-MM-dd}.%i.log.zip
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 25 MB
+          TimeBasedTriggeringPolicy:
+            interval: 1
+  Loggers:
+      Root:
+        level: info
+        AppenderRef:
+          - ref: STDOUT
+            level: all
+
+      Logger:
+        - name: com.anderson
+          level: all
+          AppenderRef:
+            - ref: FILE-APPLICATION
+              level: all
