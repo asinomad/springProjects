@@ -13,6 +13,6 @@ COPY dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz .
 RUN tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-COPY main-service-app.jar /app.jar
+COPY main-service-app.war /app.war
 
-CMD [ "sh", "-c", "java $JAVA_OPTS -jar /app.jar", "" ]
+CMD [ "sh", "-c", "java $JAVA_OPTS -jar /app.war", "" ]

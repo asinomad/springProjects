@@ -7,8 +7,6 @@ public interface IUserService {
 
     User findById(Long id);
 
-    List<User> findByName(String name);
-
     void saveUser(User user);
 
     void updateUser(User user);

@@ -1,15 +1,18 @@
 package com.anderson.api.controller;
 
-import java.util.Optional;
-import java.util.function.Consumer;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.JsonbHttpMessageConverter;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.anderson.api.api.pojo.User;
-import com.anderson.core.repository.UserRepository;
 import com.anderson.core.service.UserService;
+
 
 @RestController
 @RequestMapping(value="/users")
@@ -20,12 +23,16 @@ public class UserController {
 
     @RequestMapping(value="/{userId}", method= RequestMethod.GET)
     public User getUser(@PathVariable Long userId) {
-        return userService.findById(userId);
+        User user = userService.findById(userId);
+        if (user == null)
+            return new User();
+        else
+            return user;
     }
 
-    @RequestMapping(value="/{userId}", method=RequestMethod.POST)
-    public void updateUser(@PathVariable Long userId) {
-
+    @PostMapping
+    public void saveUser(@Valid @RequestBody User user) {
+        userService.saveUser(user);
     }
 
 

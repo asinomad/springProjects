@@ -31,13 +31,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> findByName(String name) {
-        return null;
-    }
-
-    @Override
     public void saveUser(User user) {
-
+        logger.debug("saveUser# user = " + user);
+        userRepository.save(user);
+        logger.debug("saveUser# user was saved!");
     }
 
     @Override

@@ -24,5 +24,5 @@ services:
         environment:
           - DATABASE_HOST=postgres.service
           - DATABASE_PORT=5432
-        command: "dockerize -wait tcp://postgres.service:5432 -timeout 120s java -jar app.jar"
+        command: "dockerize -wait tcp://postgres.service:5432 -timeout 120s java -jar app.war"
         user: ${USERID}:${GROUPID}

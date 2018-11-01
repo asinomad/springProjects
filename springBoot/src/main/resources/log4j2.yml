@@ -14,12 +14,38 @@ Configutation:
         pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
     RollingFile:
+      - name: FILE-ALL
+        fileName: ${LOG_DIR}/@project.artifactId@/@project.version@/@project.artifactId@.log
+        filePattern: ${LOG_DIR}/@project.artifactId@/@project.version@/@project.artifactId@.%d{yyyy-MM-dd}.%i.log.zip
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 25 MB
+          TimeBasedTriggeringPolicy:
+            interval: 1
+
+      - name: FILE-ERROR
+        ThresholdFilter:
+          level: error
+          onMatch: ACCEPT
+          onMismatch: DENY
+        fileName: ${LOG_DIR}/@project.artifactId@/@project.version@/@project.artifactId@-error.log
+        filePattern: ${LOG_DIR}/@project.artifactId@/@project.version@/@project.artifactId@-error.%d{yyyy-MM-dd}.%i.log.zip
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level - %msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 10 MB
+          TimeBasedTriggeringPolicy:
+            interval: 1
+
       - name: FILE-APPLICATION
         ThresholdFilter:
-          level: all
+          level: info
           onMatch: ACCEPT
-        fileName: ${LOG_DIR}/@artifactId@/@version@/@artifactId@-application.log
-        filePattern: ${LOG_DIR}/@artifactId/@version/@artifactId@-application.%d{yyyy-MM-dd}.%i.log.zip
+        fileName: ${LOG_DIR}/@project.artifactId@/@project.version@/@project.artifactId@-application.log
+        filePattern: ${LOG_DIR}/@project.artifactId@/@project.version@/@project.artifactId@-application.%d{yyyy-MM-dd}.%i.log.zip
         PatternLayout:
           pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level - %msg%n"
         Policies:
@@ -32,11 +58,15 @@ Configutation:
         level: info
         AppenderRef:
           - ref: STDOUT
+            level: info
+          - ref: FILE-ALL
             level: all
+          - ref: FILE-ERROR
+            level: warn
 
       Logger:
         - name: com.anderson
           level: all
           AppenderRef:
             - ref: FILE-APPLICATION
-              level: all
+              level: info

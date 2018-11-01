@@ -38,6 +38,8 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+CREATE SEQUENCE public.hibernate_sequence START 1;
+
 --
 -- TOC entry 197 (class 1259 OID 16393)
 -- Name: Users; Type: TABLE; Schema: public; Owner: postgres
@@ -61,8 +63,6 @@ ALTER TABLE public."Users" OWNER TO postgres;
 ALTER TABLE ONLY public."Users"
     ADD CONSTRAINT id_pk PRIMARY KEY (id);
 
-
---INSERT INTO public."Users" VALUES (1,'Aliaksandra','Andersan','Ilinichna');
 
 -- Completed on 2018-10-30 10:42:27
 

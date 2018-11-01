@@ -5,3 +5,5 @@
 *.ipr
 
 /target/
+/environments/dev/logs
+/environments/dev/common-context/main-service/main-service-app.war
